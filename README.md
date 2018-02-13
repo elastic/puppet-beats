@@ -96,8 +96,6 @@ Or pass a Puppet URL that will be used as the source of configuration:
 beats::auditbeat::settings: 'puppet:///somefileshare/auditbeat.yml'
 ```
 
-#### Beats configuration
-
 ### Beats specific usage
 
 #### Metricbeat modules
@@ -114,7 +112,14 @@ class { 'beats':
 }
 ```
 
-If you need to define custom settings for a particular module, add those in Hiera under `beats::metricbeat::<module_name>::settings`.
+If you need to define custom settings for a particular module, add those in Hiera under `beats::metricbeat::<module_name>::settings`. For example:
+
+```yaml
+beats::metricbeat::docker::settings:
+  metricsets: ["container", "cpu", "diskio", "healthcheck", "info", "memory", "network"]
+  hosts: ["unix:///var/run/docker.sock"]
+  period: 10s
+```
 
 ## Reference
 
