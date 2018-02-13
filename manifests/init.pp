@@ -33,7 +33,8 @@ class beats (
   Enum['running', 'stopped'] $service_ensure,
   Boolean $service_manage,
   Optional[String] $service_provider,
-  String $config_root
+  String $config_root,
+  Hash $metricbeat_modules_manage
   ) {
     contain beats::install
     contain beats::config

@@ -63,7 +63,9 @@ class { 'beats':
 
 #### Beats custom configuration
 
-This module recommends using [Hiera](https://puppet.com/docs/puppet/5.3/hiera_intro.html) for configuration data.  You can either specify your complete Beats configuration in Hiera as YAML under `beats::<beat_name>::settings`:
+This module recommends using [Hiera](https://puppet.com/docs/puppet/5.3/hiera_intro.html) for configuration data.  You can either specify your complete Beats configuration in Hiera or as a Puppet URL under `beats::<beat_name>::settings`.
+
+Configure in Hiera:
 
 ```yaml
 beats::auditbeat::settings:
@@ -91,7 +93,7 @@ beats::auditbeat::settings:
 Or pass a Puppet URL that will be used as the source of configuration:
 
 ```yaml
-beats::auditbeat::settings_file: 'puppet:///somefileshare/auditbeat.yml'
+beats::auditbeat::settings: 'puppet:///somefileshare/auditbeat.yml'
 ```
 
 #### Beats configuration
@@ -102,23 +104,17 @@ beats::auditbeat::settings_file: 'puppet:///somefileshare/auditbeat.yml'
 
 This class can handle enabling/disabling Metricbeat modules for you.
 
-To enable a list of modules, ensure you manage Metricbeat with this class and then add the modules to `metricbeat_modules_enable`:
+To enable/disable a list of modules, ensure you manage Metricbeat with this class and then manage the modules in `metricbeat_modules_manage`:
 
 ```puppet
 class { 'beats':
   beats_manage               => ['metricbeat'],
-  metricbeat_modules_enable  => ['docker','kafka']
+  metricbeat_modules_manage  => { 'present' => ['docker','kafka'],
+                                  'absent'  =>  ['redis'] }
 }
 ```
 
-To disable some modules:
-
-```puppet
-class { 'beats':
-  beats_manage               => ['metricbeat'],
-  metricbeat_modules_disable => ['docker','kafka']
-}
-```
+If you need to define custom settings for a particular module, add those in Hiera under `beats::metricbeat::<module_name>::settings`.
 
 ## Reference
 
