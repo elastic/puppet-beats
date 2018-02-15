@@ -25,6 +25,9 @@
 # @param config_root
 #   The root directory under which individual beats config directories are found. Default value: '/etc'.
 #
+# @param metricbeat_modules_manage
+#   A list of Metricbeat modules to manage Default value: 'undef'.
+#
 class beats (
   Array[String] $beats_manage,
   String $package_ensure,
@@ -34,7 +37,7 @@ class beats (
   Boolean $service_manage,
   Optional[String] $service_provider,
   String $config_root,
-  Hash $metricbeat_modules_manage
+  Optional[Hash] $metricbeat_modules_manage
   ) {
     contain beats::install
     contain beats::config
