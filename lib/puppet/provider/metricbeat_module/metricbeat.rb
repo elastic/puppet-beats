@@ -21,7 +21,8 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
     if resource[:settings].empty?
       return ''
     else
-      return resource[:settings].to_yaml
+      # magic to remove the '---' first line that to_yaml adds
+      return resource[:settings].to_yaml.lines[1..-1].join
     end
   end
 

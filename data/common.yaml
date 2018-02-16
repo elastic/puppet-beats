@@ -1,4 +1,4 @@
-beats::beats_manage: ['metricbeat']
+beats::beats_manage: ['auditbeat','heartbeat','metricbeat','packetbeat']
 beats::package_ensure: present
 beats::package_manage: true
 beats::service_enable: true
