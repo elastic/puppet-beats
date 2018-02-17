@@ -21,16 +21,15 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
     if resource[:settings].empty?
       return ''
     else
-      # magic to remove the '---' first line that to_yaml adds
-      return resource[:settings].to_yaml.lines[1..-1].join
+      return resource[:settings].to_yaml
     end
   end
 
   # Write module_settings contents to disk.
   def writemodulefile
     if module_settings
+      info("Writing settings for Metricbeat module #resource[:name]")
       File.open(module_file, 'w') do |file|
-        file.write "- module: #{resource[:name]}\n"
         file.write module_settings
       end
     end
@@ -51,6 +50,7 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
     retry_count = 3
     retry_times = 0
     begin
+      info("Enabling Metricbeat module #resource[:name]")
       metricbeat(['modules','enable',resource[:name]])
       writemodulefile
     rescue Puppet::ExecutionFailure => e
@@ -64,6 +64,7 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
 
   # Remove this plugin from the host.
   def destroy
+    info("Disabling Metricbeat module #resource[:name]")
     metricbeat(['modules','disable',@resource[:name]])
   end
 
