@@ -25,7 +25,7 @@ class beats::config {
         $modules.each | String $m | {
           metricbeat_module { $m:
             ensure   => $ensure,
-            settings => lookup("beats::metricbeat::${m}::settings", Hash, 'deep', {})
+            settings => lookup("beats::metricbeat::module::settings::${m}", Hash, 'deep', {})
           }
         }
       }
