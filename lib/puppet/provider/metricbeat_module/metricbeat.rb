@@ -28,7 +28,7 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
   # Write module_settings contents to disk.
   def writemodulefile
     if module_settings
-      info("writing settings for Metricbeat module")
+      info("Writing settings for Metricbeat module")
       File.open(module_file, 'w') do |file|
         file.write "- module: #{resource[:name]}\n"
         module_settings.each do |key, value|
@@ -55,7 +55,6 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
     begin
       info("Enabling Metricbeat module")
       metricbeat(['modules','enable',resource[:name]])
-      writemodulefile
     rescue Puppet::ExecutionFailure => e
       retry_times += 1
       debug("Failed to enable module. Retrying... #{retry_times} of #{retry_count}")
