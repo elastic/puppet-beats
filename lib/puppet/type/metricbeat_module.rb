@@ -10,8 +10,10 @@ Puppet::Type.newtype(:metricbeat_module) do
     newparam(:settings) do
         desc 'Any custom settings for this module.'
         validate do |settings|
-            unless settings.is_a?(Hash) and settings.to_yaml
-                raise ArgumentError , "%s can not be munged to YAML" % settings
+            unless settings.empty?
+                unless settings.is_a?(Hash) and settings.to_yaml
+                    raise ArgumentError , "%s can not be munged to YAML" % settings
+                end
             end
         end
     end

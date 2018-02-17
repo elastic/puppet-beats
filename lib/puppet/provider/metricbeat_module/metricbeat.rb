@@ -19,25 +19,28 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
   # @return String
   def module_settings
     if resource[:settings].empty?
-      return ''
+      return false
     else
-      return resource[:settings].to_yaml
+      return resource[:settings]
     end
   end
 
   # Write module_settings contents to disk.
   def writemodulefile
     if module_settings
-      info("Writing settings for Metricbeat module #resource[:name]")
+      info("writing settings for Metricbeat module")
       File.open(module_file, 'w') do |file|
-        file.write module_settings
+        file.write "module: #{resource[:name]}"
+        module_settings.each do |key, value|
+          file.write "\t#{key}: #{value}"
+        end
       end
     end
   end
 
   def exists?
     if !File.exists?(module_file)
-      debug "Module file #{module_file} does not exist"
+      debug("Module file #{module_file} does not exist")
       writemodulefile
       return false
     else
@@ -50,7 +53,7 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
     retry_count = 3
     retry_times = 0
     begin
-      info("Enabling Metricbeat module #resource[:name]")
+      info("Enabling Metricbeat module")
       metricbeat(['modules','enable',resource[:name]])
       writemodulefile
     rescue Puppet::ExecutionFailure => e
@@ -64,7 +67,7 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
 
   # Remove this plugin from the host.
   def destroy
-    info("Disabling Metricbeat module #resource[:name]")
+    info("Disabling Metricbeat module")
     metricbeat(['modules','disable',@resource[:name]])
   end
 
