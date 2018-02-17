@@ -30,9 +30,9 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
     if module_settings
       info("writing settings for Metricbeat module")
       File.open(module_file, 'w') do |file|
-        file.write "module: #{resource[:name]}"
+        file.write "module: #{resource[:name]}\n"
         module_settings.each do |key, value|
-          file.write "\t#{key}: #{value}\n"
+          file.write "  #{key}: #{value}\n"
         end
       end
     end
