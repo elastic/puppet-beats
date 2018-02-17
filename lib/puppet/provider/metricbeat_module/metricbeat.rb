@@ -32,7 +32,7 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
       File.open(module_file, 'w') do |file|
         file.write "module: #{resource[:name]}"
         module_settings.each do |key, value|
-          file.write "\t#{key}: #{value}"
+          file.write "\t#{key}: #{value}\n"
         end
       end
     end
