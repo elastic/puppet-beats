@@ -32,8 +32,8 @@ class beats::config {
           }
           else {
             metricbeat_module { $m:
-              ensure    => $ensure,
-              settings  => lookup("beats::metricbeat::module::settings.${m}", Hash, 'deep', {}),
+              ensure   => $ensure,
+              settings => lookup("beats::metricbeat::module::settings.${m}", Hash, 'deep', {}),
             }
           }
         }

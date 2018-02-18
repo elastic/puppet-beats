@@ -8,14 +8,14 @@ describe 'beats' do
         it { is_expected.to contain_class('beats::install') }
         it { is_expected.to contain_class('beats::config') }
         it { is_expected.to contain_class('beats::service') }
-        it { is_expected.to contain_beats__package_install('auditbeat') }
-        it { is_expected.to contain_beats__service_install('auditbeat') }
-        it { is_expected.to contain_beats__package_install('heartbeat') }
-        it { is_expected.to contain_beats__service_install('heartbeat') }
-        it { is_expected.to contain_beats__package_install('metricbeat') }
-        it { is_expected.to contain_beats__service_install('metricbeat') }
-        it { is_expected.to contain_beats__package_install('packetbeat') }
-        it { is_expected.to contain_beats__service_install('packetbeat') }
+        it { is_expected.to contain_package('auditbeat') }
+        it { is_expected.to contain_package('heartbeat') }
+        it { is_expected.to contain_package('metricbeat') }
+        it { is_expected.to contain_package('packetbeat') }
+        it { is_expected.to contain_service('auditbeat') }
+        it { is_expected.to contain_service('heartbeat') }
+        it { is_expected.to contain_service('metricbeat') }
+        it { is_expected.to contain_service('packetbeat') }
     end
 
     # no package management
@@ -25,10 +25,10 @@ describe 'beats' do
         it { is_expected.to contain_class('beats::install') }
         it { is_expected.to contain_class('beats::config') }
         it { is_expected.to contain_class('beats::service') }
-        it { is_expected.to contain_beats__service_install('auditbeat') }
-        it { is_expected.to contain_beats__service_install('heartbeat') }
-        it { is_expected.to contain_beats__service_install('metricbeat') }
-        it { is_expected.to contain_beats__service_install('packetbeat') }
+        it { is_expected.to contain_service('auditbeat') }
+        it { is_expected.to contain_service('heartbeat') }
+        it { is_expected.to contain_service('metricbeat') }
+        it { is_expected.to contain_service('packetbeat') }
     end
 
     # no service management
@@ -38,10 +38,10 @@ describe 'beats' do
         it { is_expected.to contain_class('beats::install') }
         it { is_expected.to contain_class('beats::config') }
         it { is_expected.to contain_class('beats::service') }
-        it { is_expected.to contain_beats__package_install('auditbeat') }
-        it { is_expected.to contain_beats__package_install('heartbeat') }
-        it { is_expected.to contain_beats__package_install('metricbeat') }
-        it { is_expected.to contain_beats__package_install('packetbeat') }
+        it { is_expected.to contain_package('auditbeat') }
+        it { is_expected.to contain_package('heartbeat') }
+        it { is_expected.to contain_package('metricbeat') }
+        it { is_expected.to contain_package('packetbeat') }
     end
 
     # installing a specific beat (metricbeat)
@@ -51,8 +51,8 @@ describe 'beats' do
         it { is_expected.to contain_class('beats::install') }
         it { is_expected.to contain_class('beats::config') }
         it { is_expected.to contain_class('beats::service') }
-        it { is_expected.to contain_beats__package_install('metricbeat') }
-        it { is_expected.to contain_beats__service_install('metricbeat') }
+        it { is_expected.to contain_package('metricbeat') }
+        it { is_expected.to contain_service('metricbeat') }
     end
 
     # installing a specific beat with certain modules enabled/disabled
