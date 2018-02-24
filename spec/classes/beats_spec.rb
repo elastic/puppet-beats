@@ -55,6 +55,16 @@ describe 'beats' do
         it { is_expected.to contain_service('metricbeat') }
     end
 
+    context 'auditbeat with a config file' do
+        let(:params) { {'beats_manage' => ['auditbeat']} }
+        let(:pre_condition) { '${beats::auditbeat::settings} = \'puppet:///some/path/to/auditbeat.yml\'' }
+        it { is_expected.to compile }
+        it { is_expected.to contain_class('beats::install') }
+        it { is_expected.to contain_class('beats::config') }
+        it { is_expected.to contain_class('beats::service') }
+        it { is_expected.to contain_package('auditbeat') }
+        it { is_expected.to contain_service('auditbeat') }
+    end
     # installing a specific beat with certain modules enabled/disabled
     # context 'metricbeat with modules' do
     #     let(:params) { {'beats_manage' => ['metricbeat'], 'metricbeat_modules_manage' => { 'enable' => ['docker']}} }

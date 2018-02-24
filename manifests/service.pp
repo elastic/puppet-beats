@@ -3,7 +3,7 @@
 class beats::service {
   if $beats::service_manage == true {
     $beats::beats_manage.each |String $beat| {
-      if lookup("beats::${beat}::settings", Data, 'deep', false) {
+      if lookup("beats::${beat}::settings", Data, 'deep', {}) != {} {
         service { $beat:
           ensure     => $beats::service_ensure,
           enable     => $beats::service_enable,
