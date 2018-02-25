@@ -10,32 +10,32 @@ class beats::config {
         $beat_config = "${beats::config_root}/${beat}/${beat}.yml"
       }
     }
-    case "beats::${beat}::settings" {
-      'Hash': {
-      file { "${beat}_config":
-        ensure  => file,
-        path    => $beat_config,
-        owner   => 0,
-        group   => 0,
-        mode    => '0600',
-        content => inline_epp('<%= lookup("beats::${beat}::settings", Hash, \'deep\').to_yaml %>'),
+    case getvar("beats::${beat}::settings") {
+      Hash: {
+        file { "${beat}_config":
+          ensure  => file,
+          path    => $beat_config,
+          owner   => 0,
+          group   => 0,
+          mode    => '0600',
+          content => inline_epp('<%= lookup("beats::${beat}::settings", Hash, \'deep\').to_yaml %>'),
+        }
       }
+      String: {
+        file { "${beat}_config":
+          ensure => file,
+          path   => $beat_config,
+          owner  => 0,
+          group  => 0,
+          mode   => '0600',
+          source => lookup("beats::${beat}::settings", String, 'unique'),
+        }
       }
-      'String': {
-      file { "${beat}_config":
-        ensure => file,
-        path   => $beat_config,
-        owner  => 0,
-        group  => 0,
-        mode   => '0600',
-        source => lookup("beats::${beat}::settings", String, 'unique'),
-      }
-      }
-      'Undef': {
-        debug "no custom settings for ${beat}"
+      Undef: {
+        debug "No custom settings for ${beat}, using defaults."
       }
       default: {
-        err "Got a value for beats::${beat}::settings that we didn't expect"
+        err "Got a data type for beats::${beat}::settings that we didn't expect. Want a Hash or String"
       }
     }
     if $beat == 'metricbeat' and lookup('beats::metricbeat_modules_manage', Hash, 'deep', {}) != {} {
