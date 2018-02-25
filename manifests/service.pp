@@ -10,7 +10,7 @@ class beats::service {
           provider   => $beats::service_provider,
           hasstatus  => true,
           hasrestart => true,
-          subscribe  => File["${beats::config_root}/${beat}/${beat}.yml"]
+          subscribe  => File["${beat}_config"]
         }
       }
       else {

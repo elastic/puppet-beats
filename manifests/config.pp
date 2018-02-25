@@ -2,10 +2,19 @@
 # This class handles the configuration files for beats. Avoid modifying private classes.
 class beats::config {
   $beats::beats_manage.each |String $beat| {
+    case $facts['os']['family'] {
+      'windows': {
+        $beat_config = "${beats::config_root}\${beat}\${beat}.yml"
+      }
+      default: {
+        $beat_config = "${beats::config_root}/${beat}/${beat}.yml"
+      }
+    }
     case "beats::${beat}::settings" {
       'Hash': {
-      file { "${beats::config_root}/${beat}/${beat}.yml":
+      file { "${beat}_config":
         ensure  => file,
+        path    => $beat_config,
         owner   => 0,
         group   => 0,
         mode    => '0600',
@@ -13,8 +22,9 @@ class beats::config {
       }
       }
       'String': {
-      file { "${beats::config_root}/${beat}/${beat}.yml":
+      file { "${beat}_config":
         ensure => file,
+        path   => $beat_config,
         owner  => 0,
         group  => 0,
         mode   => '0600',
