@@ -10,7 +10,8 @@ class beats::config {
         $beat_config = "${beats::config_root}/${beat}/${beat}.yml"
       }
     }
-    case getvar("beats::${beat}::settings") {
+    if lookup("beats::${beat}::settings", Data, 'deep', undef) {
+    case lookup("beats::${beat}::settings") {
       Hash: {
         file { "${beat}_config":
           ensure  => file,
@@ -28,7 +29,7 @@ class beats::config {
           owner  => 0,
           group  => 0,
           mode   => '0600',
-          source => lookup("beats::${beat}::settings", String, 'unique'),
+          source => lookup("beats::${beat}::settings", String),
         }
       }
       Undef: {
@@ -37,6 +38,7 @@ class beats::config {
       default: {
         err "Got a data type for beats::${beat}::settings that we didn't expect. Want a Hash or String"
       }
+    }
     }
     if $beat == 'metricbeat' and lookup('beats::metricbeat_modules_manage', Hash, 'deep', {}) != {} {
       lookup(beats::metricbeat_modules_manage).each | String $ensure, Array[String] $modules | {

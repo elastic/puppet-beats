@@ -1,1 +1,1 @@
-# beats::auditbeat::settings: puppet:///some/path/to/auditbeat.yml
+beats::auditbeat::settings: puppet:///some/path/to/auditbeat.yml
