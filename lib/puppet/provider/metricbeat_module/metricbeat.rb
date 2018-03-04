@@ -14,34 +14,9 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
     )
   end
 
-  # Metricbeat module settings.
-  #
-  # @return String
-  def module_settings
-    if resource[:settings].empty?
-      return false
-    else
-      return resource[:settings]
-    end
-  end
-
-  # Write module_settings contents to disk.
-  def writemodulefile
-    if module_settings
-      info("Writing settings for Metricbeat module")
-      File.open(module_file, 'w') do |file|
-        file.write "- module: #{resource[:name]}\n"
-        module_settings.each do |key, value|
-          file.write "  #{key}: #{value}\n"
-        end
-      end
-    end
-  end
-
   def exists?
     if !File.exists?(module_file)
       debug("Module file #{module_file} does not exist")
-      writemodulefile
       return false
     else
       debug "Module exists"

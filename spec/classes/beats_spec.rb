@@ -68,6 +68,7 @@ describe 'beats' do
                 it { is_expected.to contain_package('heartbeat') }
                 it { is_expected.to contain_package('metricbeat') }
                 it { is_expected.to contain_package('packetbeat') }
+                it { is_expected.to contain_file('auditbeat_config') }
             end
             describe 'beats::service' do
                 it { is_expected.not_to contain_service('auditbeat') }

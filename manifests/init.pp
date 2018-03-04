@@ -47,9 +47,9 @@ class beats (
     contain beats::config
     contain beats::service
     if ($manage_repo == true) {
-     include elastic_stack::repo
+      include elastic_stack::repo
     }
     Class['::beats::install']
     -> Class['::beats::config']
-    ~> Class['::beats::service']
+    -> Class['::beats::service']
 }

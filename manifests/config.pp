@@ -42,22 +42,20 @@ class beats::config {
     }
     if $beat == 'metricbeat' and lookup('beats::metricbeat_modules_manage', Hash, 'deep', {}) != {} {
       lookup(beats::metricbeat_modules_manage).each | String $ensure, Array[String] $modules | {
-        $modules.each | String $m | {
           if $beats::service_manage == true {
-            metricbeat_module { $m:
-              ensure   => $ensure,
-              settings => lookup("beats::metricbeat::module::settings.${m}", Hash, 'deep', {}),
-              notify   => Service['metricbeat']
+            beats::metricbeat::module { $modules:
+              ensure     => $ensure,
+              module_dir => "${beats::config_root}/metricbeat/modules.d",
+              notify     => Service['metricbeat']
             }
           }
           else {
-            metricbeat_module { $m:
-              ensure   => $ensure,
-              settings => lookup("beats::metricbeat::module::settings.${m}", Hash, 'deep', {}),
+            beats::metricbeat::module { $modules:
+              ensure     => $ensure,
+              module_dir => "${beats::config_root}/metricbeat/modules.d",
             }
           }
         }
       }
     }
   }
-}
