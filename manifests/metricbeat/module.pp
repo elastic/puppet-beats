@@ -2,11 +2,11 @@
 # This defined type handles the enabling/disabling Metricbeat modules. Avoid modifying private defined types.
 define beats::metricbeat::module (
   String $ensure = 'present',
-  Hash $settings = lookup("beats::metricbeat::module::settings.${name}", Hash, 'deep', {}),
+  Hash $settings = lookup("beats::metricbeat::module_settings.${name}", Data, 'deep', {}),
   String $module_dir
 )
 {
-  if $settings != {} {
+  if ! $settings.empty {
     metricbeat_module { $name:
       ensure   => $ensure,
     }
@@ -16,7 +16,7 @@ define beats::metricbeat::module (
       owner   => 0,
       group   => 0,
       mode    => '0600',
-      content => inline_epp('- <%= $name -%>:\n<%= $settings.to_yaml %>'),
+      content => epp('beats/metricbeat_module.yml.epp', { name => $name, settings => $settings }),
     }
   }
   else {

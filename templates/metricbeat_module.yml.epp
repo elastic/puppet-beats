@@ -1,0 +1,4 @@
+- module: <%= $name %>
+<% $settings.each |$k,$v| { -%>
+  <%= $k -%>: <%= $v %>
+<% } -%>
