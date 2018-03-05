@@ -112,10 +112,10 @@ class { 'beats':
 }
 ```
 
-If you need to define custom settings for a particular module, add those in Hiera under `beats::metricbeat::module::settings`. For example:
+If you need to define custom settings for a particular module, add those in Hiera under `beats::metricbeat::module_settings`. For example:
 
 ```yaml
-beats::metricbeat::module::settings:
+beats::metricbeat::module_settings:
   docker:
     metricsets: ["container", "cpu", "diskio", "healthcheck", "info", "memory", "network"]
     hosts: ["unix:///var/run/docker.sock"]
