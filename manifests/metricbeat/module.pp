@@ -6,10 +6,10 @@ define beats::metricbeat::module (
 {
   case $facts['os']['family'] {
     'windows': {
-      $module_dir = "${beats::config_root}\\metricbeat\\modules.d\\${name}.yml"
+      $module_dir = "${beats::config_root}\\metricbeat\\modules.d"
     }
     default: {
-      $module_dir = "${beats::config_root}/metricbeat/modules.d/${name}.yml"
+      $module_dir = "${beats::config_root}/metricbeat/modules.d"
     }
   }
   $settings = lookup("beats::metricbeat::module_settings.${name}", Data, 'deep', {})
