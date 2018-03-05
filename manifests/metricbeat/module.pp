@@ -1,12 +1,19 @@
 # @api private
 # This defined type handles the enabling/disabling Metricbeat modules. Avoid modifying private defined types.
 define beats::metricbeat::module (
-  String $ensure = 'present',
-  Hash $settings = lookup("beats::metricbeat::module_settings.${name}", Data, 'deep', {}),
-  String $module_dir
+  String $ensure = 'present'
 )
 {
-  if ! $settings.empty {
+  case $facts['os']['family'] {
+    'windows': {
+      $module_dir = "${beats::config_root}\\metricbeat\\${name}.yml"
+    }
+    default: {
+      $module_dir = "${beats::config_root}/metricbeat/${name}.yml"
+    }
+  }
+  $settings = lookup("beats::metricbeat::module_settings.${name}", Data, 'deep', {})
+  if $settings != {} {
     metricbeat_module { $name:
       ensure   => $ensure,
     }

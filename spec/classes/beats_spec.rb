@@ -21,10 +21,14 @@ describe 'beats' do
                 it { is_expected.to contain_package('heartbeat') }
                 it { is_expected.to contain_package('metricbeat') }
                 it { is_expected.to contain_package('packetbeat') }
+            end
+            describe 'beats::config' do
                 it { is_expected.to contain_file('auditbeat_config') }
+                it { is_expected.to contain_beats__metricbeat__module('docker').that_notifies('Service[metricbeat]') }
             end
             describe 'beats::service' do
-                it { is_expected.to contain_service('auditbeat') }
+                it { is_expected.to contain_file('auditbeat_config') }
+                it { is_expected.to contain_service('auditbeat').that_subscribes_to('File[auditbeat_config]') }
                 it { is_expected.to contain_service('heartbeat') }
                 it { is_expected.to contain_service('metricbeat') }
                 it { is_expected.to contain_service('packetbeat') }
@@ -46,8 +50,12 @@ describe 'beats' do
                 it { is_expected.not_to contain_package('metricbeat') }
                 it { is_expected.not_to contain_package('packetbeat') }
             end
+            describe 'beats::config' do
+                it { is_expected.to contain_file('auditbeat_config') }
+                it { is_expected.to contain_beats__metricbeat__module('docker').that_notifies('Service[metricbeat]') }
+            end
             describe 'beats::service' do
-                it { is_expected.to contain_service('auditbeat') }
+                it { is_expected.to contain_service('auditbeat').that_subscribes_to('File[auditbeat_config]') }
                 it { is_expected.to contain_service('heartbeat') }
                 it { is_expected.to contain_service('metricbeat') }
                 it { is_expected.to contain_service('packetbeat') }
@@ -68,7 +76,10 @@ describe 'beats' do
                 it { is_expected.to contain_package('heartbeat') }
                 it { is_expected.to contain_package('metricbeat') }
                 it { is_expected.to contain_package('packetbeat') }
+            end
+            describe 'beats::config' do
                 it { is_expected.to contain_file('auditbeat_config') }
+                it { is_expected.to contain_beats__metricbeat__module('docker') }
             end
             describe 'beats::service' do
                 it { is_expected.not_to contain_service('auditbeat') }
@@ -92,6 +103,10 @@ describe 'beats' do
                 it { is_expected.not_to contain_package('auditbeat') }
                 it { is_expected.not_to contain_package('heartbeat') }
                 it { is_expected.not_to contain_package('packetbeat') }
+            end
+            describe 'beats::config' do
+                it { is_expected.not_to contain_file('auditbeat_config') }
+                it { is_expected.to contain_beats__metricbeat__module('docker').that_notifies('Service[metricbeat]') }
             end
             describe 'beats::service' do
                 it { is_expected.to contain_service('metricbeat') }

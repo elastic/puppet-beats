@@ -4,7 +4,7 @@ class beats::config {
   $beats::beats_manage.each |String $beat| {
     case $facts['os']['family'] {
       'windows': {
-        $beat_config = "${beats::config_root}\${beat}\${beat}.yml"
+        $beat_config = "${beats::config_root}\\${beat}\\${beat}.yml"
       }
       default: {
         $beat_config = "${beats::config_root}/${beat}/${beat}.yml"
@@ -45,14 +45,12 @@ class beats::config {
           if $beats::service_manage == true {
             beats::metricbeat::module { $modules:
               ensure     => $ensure,
-              module_dir => "${beats::config_root}/metricbeat/modules.d",
               notify     => Service['metricbeat']
             }
           }
           else {
             beats::metricbeat::module { $modules:
               ensure     => $ensure,
-              module_dir => "${beats::config_root}/metricbeat/modules.d",
             }
           }
         }
