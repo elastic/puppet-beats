@@ -1,4 +1,2 @@
 # MANAGED BY PUPPET
-<% $settings.each |$k,$v| { -%>
-  <%= $k -%>: <%= $v %>
-<% } -%>
+<%= $settings.to_yaml %>

@@ -1,5 +1,2 @@
 # MANAGED BY PUPPET
-- module: <%= $name %>
-<% $settings.each |$k,$v| { -%>
-  <%= $k -%>: <%= $v %>
-<% } -%>
+<%= merge({ 'module' => $name},$settings).to_yaml %>
