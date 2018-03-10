@@ -1,5 +1,4 @@
 # MANAGED BY PUPPET
-- module: <%= $name %>
 <% $settings.each |$k,$v| { -%>
   <%= $k -%>: <%= $v %>
 <% } -%>

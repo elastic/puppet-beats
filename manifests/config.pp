@@ -10,50 +10,33 @@ class beats::config {
         $beat_config = "${beats::config_root}/${beat}/${beat}.yml"
       }
     }
-    if lookup("beats::${beat}::settings", Data, 'deep', undef) {
-    case lookup("beats::${beat}::settings") {
-      Hash: {
-        file { "${beat}_config":
-          ensure  => file,
-          path    => $beat_config,
-          owner   => 0,
-          group   => 0,
-          mode    => '0600',
-          content => inline_epp('<%= lookup("beats::${beat}::settings", Hash, \'deep\').to_yaml %>'),
-        }
-      }
-      String: {
-        file { "${beat}_config":
-          ensure => file,
-          path   => $beat_config,
-          owner  => 0,
-          group  => 0,
-          mode   => '0600',
-          source => lookup("beats::${beat}::settings", String),
-        }
-      }
-      Undef: {
-        debug "No custom settings for ${beat}, using defaults."
-      }
-      default: {
-        err "Got a data type for beats::${beat}::settings that we didn't expect. Want a Hash or String"
-      }
-    }
-    }
-    if $beat == 'metricbeat' and lookup('beats::metricbeat_modules_manage', Hash, 'deep', {}) != {} {
-      lookup(beats::metricbeat_modules_manage).each | String $ensure, Array[String] $modules | {
-          if $beats::service_manage == true {
-            beats::metricbeat::module { $modules:
-              ensure     => $ensure,
-              notify     => Service['metricbeat']
-            }
+    $settings = lookup("beats::${beat}::settings", Data, 'deep', undef)
+    if $settings {
+      case type($settings) {
+        String: {
+          file { "${beat}_config":
+            ensure => file,
+            path   => $beat_config,
+            owner  => 0,
+            group  => 0,
+            mode   => '0600',
+            source => $settings,
           }
-          else {
-            beats::metricbeat::module { $modules:
-              ensure     => $ensure,
-            }
+        }
+        default: {
+          file { "${beat}_config":
+            ensure  => file,
+            path    => $beat_config,
+            owner   => 0,
+            group   => 0,
+            mode    => '0600',
+            content => epp('beats/beat.yml.epp', { settings => $settings }),
           }
         }
       }
+    }
+    if $beat == 'metricbeat' {
+      require beats::metricbeat::config
     }
   }
+}

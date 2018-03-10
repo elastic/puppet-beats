@@ -6,4 +6,3 @@ beats::service_ensure: running
 beats::service_manage: true
 beats::service_provider: ~
 beats::config_root: /etc
-beats::metricbeat_modules_manage: {}

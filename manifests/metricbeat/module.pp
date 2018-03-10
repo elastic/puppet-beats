@@ -12,8 +12,8 @@ define beats::metricbeat::module (
       $module_dir = "${beats::config_root}/metricbeat/modules.d"
     }
   }
-  $settings = lookup("beats::metricbeat::module_settings.${name}", Data, 'deep', {})
-  if $settings != {} {
+  $settings = lookup("beats::metricbeat::${name}::settings", Data, 'deep', undef)
+  if $settings {
     metricbeat_module { $name:
       ensure   => $ensure,
     }

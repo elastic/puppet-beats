@@ -2,9 +2,7 @@ require 'spec_helper'
 
 describe 'beats' do
     # defaults should result in all official beats installed
-    let(:pre_condition) { %q(
-    include elastic_stack::repo
-    )}
+    let(:pre_condition) { 'include elastic_stack::repo' }
     on_supported_os.each do |os, facts|
         let(:facts) do
             facts
@@ -24,6 +22,9 @@ describe 'beats' do
             end
             describe 'beats::config' do
                 it { is_expected.to contain_file('auditbeat_config') }
+                it { is_expected.to contain_class('beats::metricbeat::config')}
+            end
+            describe 'beats::metricbeat::config' do
                 it { is_expected.to contain_beats__metricbeat__module('docker').that_notifies('Service[metricbeat]') }
             end
             describe 'beats::service' do
@@ -52,6 +53,9 @@ describe 'beats' do
             end
             describe 'beats::config' do
                 it { is_expected.to contain_file('auditbeat_config') }
+                it { is_expected.to contain_class('beats::metricbeat::config')}
+            end
+            describe 'beats::metricbeat::config' do
                 it { is_expected.to contain_beats__metricbeat__module('docker').that_notifies('Service[metricbeat]') }
             end
             describe 'beats::service' do
@@ -79,6 +83,9 @@ describe 'beats' do
             end
             describe 'beats::config' do
                 it { is_expected.to contain_file('auditbeat_config') }
+                it { is_expected.to contain_class('beats::metricbeat::config')}
+            end
+            describe 'beats::metricbeat::config' do
                 it { is_expected.to contain_beats__metricbeat__module('docker') }
             end
             describe 'beats::service' do
@@ -106,7 +113,7 @@ describe 'beats' do
             end
             describe 'beats::config' do
                 it { is_expected.not_to contain_file('auditbeat_config') }
-                it { is_expected.to contain_beats__metricbeat__module('docker').that_notifies('Service[metricbeat]') }
+                it { is_expected.to contain_class('beats::metricbeat::config')}
             end
             describe 'beats::service' do
                 it { is_expected.to contain_service('metricbeat') }

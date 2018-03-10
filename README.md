@@ -102,24 +102,32 @@ beats::auditbeat::settings: 'puppet:///somefileshare/auditbeat.yml'
 
 This class can handle enabling/disabling Metricbeat modules for you.
 
-To enable/disable a list of modules, ensure you manage Metricbeat with this class and then manage the modules in `metricbeat_modules_manage`:
+To enable/disable a list of modules, ensure you manage Metricbeat with this class:
 
 ```puppet
 class { 'beats':
   beats_manage               => ['metricbeat'],
-  metricbeat_modules_manage  => { 'present' => ['docker','kafka'],
-                                  'absent'  =>  ['redis'] }
 }
 ```
 
-If you need to define custom settings for a particular module, add those in Hiera under `beats::metricbeat::module_settings`. For example:
+And then configure the modules you want to enable/disable in Hiera:
 
 ```yaml
-beats::metricbeat::module_settings:
-  docker:
-    metricsets: ["container", "cpu", "diskio", "healthcheck", "info", "memory", "network"]
-    hosts: ["unix:///var/run/docker.sock"]
-    period: 10s
+beats::metricbeat::modules:
+  'present':
+    - docker
+    - system
+  'absent':
+    - kafka
+```
+
+If you need to define custom settings for a particular module, add those in Hiera under `beats::metricbeat::<module_name>::settings`. For example:
+
+```yaml
+beats::metricbeat::docker::settings:
+  metricsets: ["container", "cpu", "diskio", "healthcheck", "info", "memory", "network"]
+  hosts: ["unix:///var/run/docker.sock"]
+  period: 10s
 ```
 
 ## Reference
