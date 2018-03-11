@@ -1,2 +1,2 @@
 # MANAGED BY PUPPET
-<%= merge({ 'module' => $name},$settings).to_yaml %>
+<%= $settings.to_yaml %>

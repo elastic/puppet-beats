@@ -8,7 +8,13 @@ describe 'beats::metricbeat::module' do
         let(:facts) do
             facts
         end
-        context "on #{os}" do
+        context "on #{os} (without custom settings)" do
+            it { is_expected.to compile }
+            it { is_expected.not_to contain_file('metricbeat_redis_config') }
+            it { is_expected.to contain_metricbeat_module('redis') }
+        end
+        context "on #{os} (with custom settings)" do
+            let(:params) { {'ensure' => 'present', 'settings' => [{'module' => 'redis', 'period' => '20s'}]} }
             it { is_expected.to compile }
             it { is_expected.to contain_file('metricbeat_redis_config') }
             it { is_expected.to contain_metricbeat_module('redis') }

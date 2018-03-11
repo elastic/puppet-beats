@@ -2,11 +2,8 @@ beats::auditbeat::settings: puppet:///some/path/to/auditbeat.yml
 beats::metricbeat::modules:
   'present':
   - docker
-beats::metricbeat::docker::settings:
-  metricsets: ['cpu','filesystem']
-  hosts: ["unix:///var/run/docker.sock"]
-  period: 10s
-beats::metricbeat::redis::settings:
-  metricsets: ["info", "keyspace"]
-  period: 10s
-  hosts: ["127.0.0.1:6379"]
+beats::metricbeat::modules::settings:
+  - module: docker
+    metricsets: ['cpu','filesystem']
+    hosts: ["unix:///var/run/docker.sock"]
+    period: 10s

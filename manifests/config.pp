@@ -35,7 +35,7 @@ class beats::config {
         }
       }
     }
-    if $beat == 'metricbeat' {
+    if $beat == 'metricbeat' and lookup('beats::metricbeat::modules', Data, 'deep', undef) {
       require beats::metricbeat::config
     }
   }

@@ -63,7 +63,7 @@ class { 'beats':
 
 #### Beats custom configuration
 
-This module recommends using [Hiera](https://puppet.com/docs/puppet/5.3/hiera_intro.html) for configuration data.  You can either specify your complete Beats configuration in Hiera or as a Puppet URL under `beats::<beat_name>::settings`.
+This module recommends using Hiera for configuration data.  You can either specify your complete Beats configuration in Hiera or as a Puppet URL under `beats::<beat_name>::settings`.
 
 Configure in Hiera:
 
@@ -106,7 +106,7 @@ To enable/disable a list of modules, ensure you manage Metricbeat with this clas
 
 ```puppet
 class { 'beats':
-  beats_manage               => ['metricbeat'],
+  beats_manage => ['metricbeat'],
 }
 ```
 
@@ -121,13 +121,16 @@ beats::metricbeat::modules:
     - kafka
 ```
 
-If you need to define custom settings for a particular module, add those in Hiera under `beats::metricbeat::<module_name>::settings`. For example:
+If you need to define custom settings for a particular module, add those in Hiera under `beats::metricbeat::modules::settings`. For example:
 
 ```yaml
-beats::metricbeat::docker::settings:
-  metricsets: ["container", "cpu", "diskio", "healthcheck", "info", "memory", "network"]
-  hosts: ["unix:///var/run/docker.sock"]
-  period: 10s
+beats::metricbeat::modules::settings:
+  - module: docker
+    metricsets: ["container", "cpu", "diskio", "healthcheck", "info", "memory", "network"]
+    hosts: ["unix:///var/run/docker.sock"]
+    period: 10s
+  - module: redis
+    period: 10s
 ```
 
 ## Reference
