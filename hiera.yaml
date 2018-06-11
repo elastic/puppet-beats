@@ -6,17 +6,17 @@ defaults:
   data_hash: 'yaml_data'
 
 hierarchy:
-  - name: 'Full Version'
-    path: '%{facts.os.name}-%{facts.os.release.full}.yaml'
+  - name: 'Distribution Major Version'
+    path: 'distro/%{facts.os.name}/%{facts.os.release.major}.yaml'
 
-  - name: 'Major Version'
-    path: '%{facts.os.name}-%{facts.os.release.major}.yaml'
+  - name: 'Operating system family Major Version'
+    path: 'os/%{facts.os.family}/%{facts.os.release.major}.yaml'
 
   - name: 'Distribution Name'
-    path: '%{facts.os.name}.yaml'
+    path: 'distro/%{facts.os.name}.yaml'
 
   - name: 'Operating System Family'
-    path: '%{facts.os.family}-family.yaml'
+    path: 'os/%{facts.os.family}.yaml'
 
   - name: 'common'
     path: 'common.yaml'
