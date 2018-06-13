@@ -1,6 +1,12 @@
 # beats
 #
-# @param beats_manage
+# @param config_root
+#   The root directory under which individual beats config directories are found. Default value: '/etc'.
+#
+# @param manage_repo
+#   Enable repository management. Configure the official repositories.
+#
+# @param managed_beats
 #   The names of Beats to manage with this module.
 #
 # @param package_ensure
@@ -22,30 +28,38 @@
 # @param service_provider
 #   Which service provider to use for Beats. Default value: 'undef'.
 #
-# @param config_root
-#   The root directory under which individual beats config directories are found. Default value: '/etc'.
-#
-# @param [Boolean] manage_repo
-#   Enable repository management. Configure the official repositories.
-#
 class beats (
-  Array[String] $beats_manage,
-  String $package_ensure,
-  Boolean $package_manage,
-  Boolean $service_enable,
+  String                     $config_root,
+  Boolean                    $manage_repo,
+  Beats::Managed_beats       $managed_beats,
+  Variant[Enum['present', 'absent', 'latest'], Pattern[/^\d([.]\d+)*(-[\d\w]+)?$/]] $package_ensure,
+  Boolean                    $package_manage,
+  Boolean                    $service_enable,
   Enum['running', 'stopped'] $service_ensure,
-  Boolean $service_manage,
-  Optional[String] $service_provider,
-  String $config_root,
-  Boolean $manage_repo = true
+  Boolean                    $service_manage,
   ) {
-    contain beats::install
-    contain beats::config
-    contain beats::service
-    if ($manage_repo == true) {
-      include elastic_stack::repo
+
+  contain beats::install
+  contain beats::config
+  contain beats::service
+
+  if $manage_repo {
+    include elastic_stack::repo
+    Class['elastic_stack::repo'] -> Class['beats::install']
+  }
+
+  # Absent needs to run classes in a different order
+  case $package_ensure {
+    'absent': {
+      Class['::beats::service']
+      -> Class['::beats::config']
+      -> Class['::beats::install']
     }
-    Class['::beats::install']
-    -> Class['::beats::config']
-    -> Class['::beats::service']
+    default: {
+      Class['::beats::install']
+      -> Class['::beats::config']
+      -> Class['::beats::service']
+    }
+  }
 }
+

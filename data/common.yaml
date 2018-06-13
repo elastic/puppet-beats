@@ -1,8 +1,12 @@
-beats::beats_manage: ['auditbeat','heartbeat','metricbeat','packetbeat']
+beats::config_root: '/etc'
+beats::manage_repo: true
+beats::managed_beats:
+  - 'auditbeat'
+  - 'heartbeat'
+  - 'metricbeat'
+  - 'packetbeat'
 beats::package_ensure: present
 beats::package_manage: true
 beats::service_enable: true
 beats::service_ensure: running
 beats::service_manage: true
-beats::service_provider: ~
-beats::config_root: /etc

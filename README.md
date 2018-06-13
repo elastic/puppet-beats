@@ -40,11 +40,11 @@ When using the repository management, the following module dependencies are requ
 
 ### Beginning with beats
 
-Include the `beats` class and pass a list of individual Beats to manage with `beats_manage`:
+Include the `beats` class and pass a list of individual Beats to manage with `managed_beats`:
 
 ```puppet
 class { 'beats':
-  $beats_manage => ['metricbeat','auditbeat','heartbeat','packetbeat']
+  $managed_beats => ['metricbeat','auditbeat','heartbeat','packetbeat']
 }
 ```
 
@@ -56,7 +56,7 @@ There is very few parameters you should need to customise.  The most useful woul
 
 ```puppet
 class { 'beats':
-  beats_manage => ['metricbeat','auditbeat','heartbeat','packetbeat'],
+  managed_beats => ['metricbeat','auditbeat','heartbeat','packetbeat'],
   config_root  => '/opt/beats'
 }
 ```
@@ -106,7 +106,7 @@ To enable/disable a list of modules, ensure you manage Metricbeat with this clas
 
 ```puppet
 class { 'beats':
-  beats_manage => ['metricbeat'],
+  managed_beats => ['metricbeat'],
 }
 ```
 

@@ -10,17 +10,17 @@ class beats::metricbeat::config (
 ){
   if $modules_manage {
     $modules_manage.each | String $ensure, Array[String] $modules | {
-      $modules.each | $m | {
-        $settings = beats::metricbeat::get_module_settings($m)
+      $modules.each | $module | {
+        $settings = beats::metricbeat::get_module_settings($module)
         if $beats::service_manage == true {
-          beats::metricbeat::module { $m:
+          beats::metricbeat::module { $module:
             ensure   => $ensure,
             settings => $settings,
             notify   => Service['metricbeat']
           }
         }
         else {
-          beats::metricbeat::module { $m:
+          beats::metricbeat::module { $module:
             ensure   => $ensure,
             settings => $settings
           }

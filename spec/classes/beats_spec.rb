@@ -26,6 +26,8 @@ describe 'beats' do
             end
             describe 'beats::metricbeat::config' do
                 it { is_expected.to contain_beats__metricbeat__module('docker').that_notifies('Service[metricbeat]') }
+                it { is_expected.to contain_metricbeat_module('docker') }
+                it { is_expected.to contain_file('metricbeat_docker_config') }
             end
             describe 'beats::service' do
                 it { is_expected.to contain_file('auditbeat_config') }
@@ -98,7 +100,7 @@ describe 'beats' do
 
         # installing a specific beat (metricbeat)
         context "just metricbeat on #{os}" do
-            let(:params) { {'beats_manage' => ['metricbeat']} }
+            let(:params) { {'managed_beats' => ['metricbeat']} }
             describe 'beats' do
                 it { is_expected.to compile }
                 it { is_expected.to contain_class('beats::install') }

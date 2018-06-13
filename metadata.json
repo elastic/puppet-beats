@@ -1,7 +1,7 @@
 {
   "name": "elastic-beats",
   "version": "0.1.0",
-  "author": "joshua.rich@elastic.co",
+  "author": "elastic",
   "summary": "Module for installing and configuring Elastic Beats.",
   "license": "Apache-2.0",
   "source": "https://github.com/elastic/puppet-beats",
@@ -42,12 +42,6 @@
       "operatingsystemrelease": [
         "14.04",
         "16.04"
-      ]
-    },
-    {
-      "operatingsystem": "windows",
-      "operatingsystemrelease": [
-        "2012 R2"
       ]
     }
   ],

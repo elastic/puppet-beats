@@ -1,2 +1,3 @@
 # MANAGED BY PUPPET
+# <%= $beat %> settings
 <%= $settings.to_yaml %>
