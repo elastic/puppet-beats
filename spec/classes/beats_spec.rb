@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe 'beats' do
     # defaults should result in all official beats installed
-    let(:pre_condition) { 'include elastic_stack::repo' }
     on_supported_os.each do |os, facts|
         let(:facts) do
             facts
@@ -10,7 +9,10 @@ describe 'beats' do
         context "on #{os}" do
             describe 'beats' do
                 it { is_expected.to compile }
-                it { is_expected.to contain_class('beats::install') }
+                it {
+                  is_expected.to contain_class('beats::install')
+                    .that_requires('class[elastic_stack::repo]')
+                }
                 it { is_expected.to contain_class('beats::config') }
                 it { is_expected.to contain_class('beats::service') }
             end
@@ -53,18 +55,18 @@ describe 'beats' do
                 it { is_expected.not_to contain_package('metricbeat') }
                 it { is_expected.not_to contain_package('packetbeat') }
             end
-            describe 'beats::config' do
-                it { is_expected.to contain_file('auditbeat_config') }
-                it { is_expected.to contain_class('beats::metricbeat::config')}
-            end
-            describe 'beats::metricbeat::config' do
-                it { is_expected.to contain_beats__metricbeat__module('docker').that_notifies('Service[metricbeat]') }
-            end
-            describe 'beats::service' do
-                it { is_expected.to contain_service('auditbeat').that_subscribes_to('File[auditbeat_config]') }
-                it { is_expected.to contain_service('heartbeat') }
-                it { is_expected.to contain_service('metricbeat') }
-                it { is_expected.to contain_service('packetbeat') }
+        end
+
+        # no repo management
+        context "no repo mgmt on #{os}" do
+            let(:params) { {'manage_repo' => false} }
+            describe 'beats' do
+                it { is_expected.to compile }
+                it { is_expected.to contain_class('beats::install') }
+                it { is_expected.to contain_class('beats::config') }
+                it { is_expected.to contain_class('beats::service') }
+
+                it { is_expected.not_to contain_class('elastic_stack::repo') }
             end
         end
 
