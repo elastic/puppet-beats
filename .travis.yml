@@ -11,17 +11,17 @@ before_install:
   - gem --version
   - bundle -v
 script:
-  - 'bundle exec rake $CHECK'
+  - 'bundle exec rake $TASK'
 jobs:
   include:
   - stage: intake
     env:
-    - TASK=intake
+    - TASK=test
     - PUPPET_VERSION='~> 4.5.0'
   - env:
-    - TASK=intake
+    - TASK=test
   - env:
-    - TASK=intake
+    - TASK=test
     - PUPPET_VERSION='~> 5.0'
 notifications:
   email: false
