@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe 'Beats::Managed_beats' do
   describe 'with valid inputs' do
-    [ 
-      [ 'auditbeat' ],
-      [ 'heartbeat' ],
-      [ 'metricbeat' ],
-      [ 'packetbeat' ],
-      [ 'auditbeat', 'heartbeat' ]
+    [
+      ['auditbeat'],
+      ['heartbeat'],
+      ['metricbeat'],
+      ['packetbeat'],
+      %w[auditbeat heartbeat],
     ].each do |value|
       describe value.inspect do
         it { is_expected.to allow_value(value) }
@@ -18,12 +18,11 @@ describe 'Beats::Managed_beats' do
   describe 'with invalid inputs' do
     [
       'nonbeat',
-      {'auditbeat' => true}
+      { 'auditbeat' => true },
     ].each do |value|
       describe value.inspect do
         it { is_expected.not_to allow_value(value) }
       end
     end
-
   end
 end

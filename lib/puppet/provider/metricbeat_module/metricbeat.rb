@@ -1,26 +1,25 @@
 require 'yaml'
 
 Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
-
-  commands :metricbeat => 'metricbeat'
+  commands metricbeat: 'metricbeat'
 
   # Metricbeat module file.
   #
   # @return String
   def module_file
     File.join(
-    @resource[:module_dir],
-    "#{resource[:name]}.yml"
+      @resource[:module_dir],
+      "#{resource[:name]}.yml",
     )
   end
 
   def exists?
-    if !File.exists?(module_file)
+    if !File.exist?(module_file)
       debug("Module file #{module_file} does not exist")
-      return false
+      false
     else
-      debug "Module exists"
-      return true
+      debug 'Module exists'
+      true
     end
   end
 
@@ -28,8 +27,8 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
     retry_count = 3
     retry_times = 0
     begin
-      info("Enabling Metricbeat module")
-      metricbeat(['modules','enable',resource[:name]])
+      info('Enabling Metricbeat module')
+      metricbeat(['modules', 'enable', resource[:name]])
     rescue Puppet::ExecutionFailure => e
       retry_times += 1
       debug("Failed to enable module. Retrying... #{retry_times} of #{retry_count}")
@@ -41,8 +40,7 @@ Puppet::Type.type(:metricbeat_module).provide(:metricbeat) do
 
   # Remove this plugin from the host.
   def destroy
-    info("Disabling Metricbeat module")
-    metricbeat(['modules','disable',@resource[:name]])
+    info('Disabling Metricbeat module')
+    metricbeat(['modules', 'disable', @resource[:name]])
   end
-
 end
