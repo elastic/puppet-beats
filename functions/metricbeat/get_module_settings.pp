@@ -9,7 +9,7 @@
 #   A Metricbeat module to fetch settings for.
 #
 function beats::metricbeat::get_module_settings(String $module) >> Array[Hash] {
-  $module_settings = lookup("beats::metricbeat::modules::settings", Array[Hash], 'deep', undef)
+  $module_settings = lookup('beats::metricbeat::modules::settings', Array[Hash], 'deep', undef)
   $settings = $module_settings.filter |$v| {
     $value = $v
     $value =~ Hash and $value[module] == $module
