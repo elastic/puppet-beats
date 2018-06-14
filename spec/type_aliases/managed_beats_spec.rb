@@ -4,10 +4,10 @@ describe 'Beats::Managed_beats' do
   describe 'with valid inputs' do
     [
       ['auditbeat'],
-      ['heartbeat'],
+      ['heartbeat-elastic'],
       ['metricbeat'],
       ['packetbeat'],
-      %w[auditbeat heartbeat],
+      %w[auditbeat heartbeat-elastic],
     ].each do |value|
       describe value.inspect do
         it { is_expected.to allow_value(value) }

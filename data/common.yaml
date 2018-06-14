@@ -2,7 +2,7 @@ beats::config_root: '/etc'
 beats::manage_repo: true
 beats::managed_beats:
   - 'auditbeat'
-  - 'heartbeat'
+  - 'heartbeat-elastic'
   - 'metricbeat'
   - 'packetbeat'
 beats::package_ensure: present

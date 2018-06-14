@@ -35,6 +35,7 @@ A Puppet module for managing and configuring official Elastic beats. Works best 
 
 When using the repository management, the following module dependencies are required:
 
+* General: [Elastic/elastic_stack](https://forge.puppet.com/elastic/elastic_stack)
 * Debian/Ubuntu: [Puppetlabs/apt](http://forge.puppetlabs.com/puppetlabs/apt)
 * OpenSuSE/SLES: [Darin/zypprepo](https://forge.puppetlabs.com/darin/zypprepo)
 
@@ -44,7 +45,7 @@ Include the `beats` class and pass a list of individual Beats to manage with `ma
 
 ```puppet
 class { 'beats':
-  $managed_beats => ['metricbeat','auditbeat','heartbeat','packetbeat']
+  $managed_beats => ['metricbeat','auditbeat','heartbeat-elastic','packetbeat']
 }
 ```
 
@@ -56,7 +57,7 @@ There is very few parameters you should need to customise.  The most useful woul
 
 ```puppet
 class { 'beats':
-  managed_beats => ['metricbeat','auditbeat','heartbeat','packetbeat'],
+  managed_beats => ['metricbeat','auditbeat','heartbeat-elastic','packetbeat'],
   config_root  => '/opt/beats'
 }
 ```
