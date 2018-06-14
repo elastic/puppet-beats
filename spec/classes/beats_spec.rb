@@ -19,7 +19,7 @@ describe 'beats' do
       end
       describe 'beats::install' do
         it { is_expected.to contain_package('auditbeat') }
-        it { is_expected.to contain_package('heartbeat') }
+        it { is_expected.to contain_package('heartbeat-elastic') }
         it { is_expected.to contain_package('metricbeat') }
         it { is_expected.to contain_package('packetbeat') }
       end
@@ -35,7 +35,7 @@ describe 'beats' do
       describe 'beats::service' do
         it { is_expected.to contain_file('auditbeat_config') }
         it { is_expected.to contain_service('auditbeat').that_subscribes_to('File[auditbeat_config]') }
-        it { is_expected.to contain_service('heartbeat') }
+        it { is_expected.to contain_service('heartbeat-elastic') }
         it { is_expected.to contain_service('metricbeat') }
         it { is_expected.to contain_service('packetbeat') }
       end
@@ -53,7 +53,7 @@ describe 'beats' do
       end
       describe 'beats::install' do
         it { is_expected.not_to contain_package('auditbeat') }
-        it { is_expected.not_to contain_package('heartbeat') }
+        it { is_expected.not_to contain_package('heartbeat-elastic') }
         it { is_expected.not_to contain_package('metricbeat') }
         it { is_expected.not_to contain_package('packetbeat') }
       end
@@ -85,7 +85,7 @@ describe 'beats' do
       end
       describe 'beats::service' do
         it { is_expected.not_to contain_service('auditbeat') }
-        it { is_expected.not_to contain_service('heartbeat') }
+        it { is_expected.not_to contain_service('heartbeat-elastic') }
         it { is_expected.not_to contain_service('metricbeat') }
         it { is_expected.not_to contain_service('packetbeat') }
       end
@@ -104,7 +104,7 @@ describe 'beats' do
       describe 'beats::install' do
         it { is_expected.to contain_package('metricbeat') }
         it { is_expected.not_to contain_package('auditbeat') }
-        it { is_expected.not_to contain_package('heartbeat') }
+        it { is_expected.not_to contain_package('heartbeat-elastic') }
         it { is_expected.not_to contain_package('packetbeat') }
       end
       describe 'beats::config' do
@@ -114,7 +114,7 @@ describe 'beats' do
       describe 'beats::service' do
         it { is_expected.to contain_service('metricbeat') }
         it { is_expected.not_to contain_service('auditbeat') }
-        it { is_expected.not_to contain_service('heartbeat') }
+        it { is_expected.not_to contain_service('heartbeat-elastic') }
         it { is_expected.not_to contain_service('packetbeat') }
       end
     end
