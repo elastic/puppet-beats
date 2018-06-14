@@ -23,6 +23,9 @@ jobs:
   - env:
     - TASK=test
     - PUPPET_VERSION='~> 5.0'
+  - stage: acceptance
+    env:
+    - TASK=beaker:centos-7-x64
 notifications:
   email: false
   slack:
